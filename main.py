@@ -1,4 +1,5 @@
 import PyPDF2
+from reportlab.lib.colors import red
 from reportlab.pdfgen import canvas
 import io
 
@@ -30,10 +31,13 @@ def adicionar_marcas_dagua(input_pdf, output_pdf, marcas_dagua, espacamento):
 
 def gerar_marcas_dagua_pdf(marcas_dagua, espacamento):
     packet = io.BytesIO()
-    can = canvas.Canvas(packet)
+    can = canvas.Canvas(packet, pagesize=(612, 792))  # Tamanho padrão de uma página (8.5 x 11 polegadas)
 
     # Adicionar marcas d'água
     for marca in marcas_dagua:
+        can.setFont("Helvetica", 12)  # Fonte e tamanho do texto
+        can.setFillColor(red)  # Cor vermelha
+        can.setFillAlpha(0.3)  # Opacidade de 30%
         can.drawString(marca['x'], marca['y'], marca['texto'])
         can.translate(0, espacamento)
 
@@ -50,38 +54,40 @@ def gerar_marcas_dagua_pdf(marcas_dagua, espacamento):
 # Exemplo de uso
 input_pdf = r'pdfs\documento-8.pdf'
 output_pdf = 'arquivo_com_marcas_dagua.pdf'
+
+nome = 'Josivaldo Maria Pinto'
+
 marcas_dagua = [
-    {'x': 15, 'y': 10, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -40, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -90, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -140, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -190, 'texto': 'Marca d\'água 5'},
-    {'x': 15, 'y': -90, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -140, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -190, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -240, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -290, 'texto': 'Marca d\'água 5'},
-    {'x': 15, 'y': -190, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -240, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -290, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -340, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -390, 'texto': 'Marca d\'água 5'},
-    {'x': 15, 'y': -290, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -340, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -390, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -440, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -490, 'texto': 'Marca d\'água 5'},
-    {'x': 15, 'y': -390, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -440, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -490, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -540, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -590, 'texto': 'Marca d\'água 5'},
-    {'x': 15, 'y': -490, 'texto': 'Marca d\'água 1'},
-    {'x': 135, 'y': -540, 'texto': 'Marca d\'água 2'},
-    {'x': 255, 'y': -590, 'texto': 'Marca d\'água 3'},
-    {'x': 375, 'y': -640, 'texto': 'Marca d\'água 4'},
-    {'x': 495, 'y': -690, 'texto': 'Marca d\'água 5'},
-    # Adicione mais marcas d'água conforme necessário
+    {'x': 15, 'y': 10, 'texto': nome},
+    {'x': 135, 'y': -40, 'texto': nome},
+    {'x': 255, 'y': -90, 'texto': nome},
+    {'x': 375, 'y': -140, 'texto': nome},
+    {'x': 495, 'y': -190, 'texto': nome},
+    {'x': 15, 'y': -90, 'texto': nome},
+    {'x': 135, 'y': -140, 'texto': nome},
+    {'x': 255, 'y': -190, 'texto': nome},
+    {'x': 375, 'y': -240, 'texto': nome},
+    {'x': 495, 'y': -290, 'texto': nome},
+    {'x': 15, 'y': -190, 'texto': nome},
+    {'x': 135, 'y': -240, 'texto': nome},
+    {'x': 255, 'y': -290, 'texto': nome},
+    {'x': 375, 'y': -340, 'texto': nome},
+    {'x': 495, 'y': -390, 'texto': nome},
+    {'x': 15, 'y': -290, 'texto': nome},
+    {'x': 135, 'y': -340, 'texto': nome},
+    {'x': 255, 'y': -390, 'texto': nome},
+    {'x': 375, 'y': -440, 'texto': nome},
+    {'x': 495, 'y': -490, 'texto': nome},
+    {'x': 15, 'y': -390, 'texto': nome},
+    {'x': 135, 'y': -440, 'texto': nome},
+    {'x': 255, 'y': -490, 'texto': nome},
+    {'x': 375, 'y': -540, 'texto': nome},
+    {'x': 495, 'y': -590, 'texto': nome},
+    {'x': 15, 'y': -490, 'texto': nome},
+    {'x': 135, 'y': -540, 'texto': nome},
+    {'x': 255, 'y': -590, 'texto': nome},
+    {'x': 375, 'y': -640, 'texto': nome},
+    {'x': 495, 'y': -690, 'texto': nome},
 ]
 espacamento_entre_marcas = 50
 
