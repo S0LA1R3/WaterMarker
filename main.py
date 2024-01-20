@@ -1,6 +1,7 @@
 import PyPDF2
 from reportlab.lib.colors import red
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 import io
 
 def adicionar_marcas_dagua(input_pdf, output_pdf, marcas_dagua, espacamento):
@@ -31,14 +32,22 @@ def adicionar_marcas_dagua(input_pdf, output_pdf, marcas_dagua, espacamento):
 
 def gerar_marcas_dagua_pdf(marcas_dagua, espacamento):
     packet = io.BytesIO()
-    can = canvas.Canvas(packet, pagesize=(612, 792))  # Tamanho padrão de uma página (8.5 x 11 polegadas)
+    can = canvas.Canvas(packet, pagesize=letter)  # Usando o tamanho padrão da carta (letter)
 
     # Adicionar marcas d'água
     for marca in marcas_dagua:
-        can.setFont("Helvetica", 12)  # Fonte e tamanho do texto
-        can.setFillColor(red)  # Cor vermelha
-        can.setFillAlpha(0.3)  # Opacidade de 30%
-        can.drawString(marca['x'], marca['y'], marca['texto'])
+        text_obj = can.beginText(marca['x'], marca['y'])
+        text_obj.setFont("Helvetica", 12)  # Fonte e tamanho do texto
+        text_obj.setFillColor(red)  # Cor vermelha
+        text_obj.setFillAlpha(0.5)  # Opacidade de 30%
+
+        # Adicionar quebra de linha no texto
+        for line in marca['texto'].split('\n'):
+            text_obj.textLine(line)
+
+        can.drawText(text_obj)
+
+        # Mover para a próxima posição vertical
         can.translate(0, espacamento)
 
     can.save()
@@ -55,34 +64,43 @@ def gerar_marcas_dagua_pdf(marcas_dagua, espacamento):
 input_pdf = r'pdfs\documento-8.pdf'
 output_pdf = 'arquivo_com_marcas_dagua.pdf'
 
-nome = 'Josivaldo Maria Pinto'
+nome = 'Josivaldo Maria Pinto\n769.568.423-07'
 
 marcas_dagua = [
-    {'x': 15, 'y': 10, 'texto': nome},
-    {'x': 165, 'y': -40, 'texto': nome},
-    {'x': 315, 'y': -90, 'texto': nome},
-    {'x': 465, 'y': -140, 'texto': nome},
-    {'x': 15, 'y': -90, 'texto': nome},
-    {'x': 165, 'y': -140, 'texto': nome},
-    {'x': 315, 'y': -190, 'texto': nome},
-    {'x': 465, 'y': -240, 'texto': nome},
-    {'x': 15, 'y': -190, 'texto': nome},
-    {'x': 165, 'y': -240, 'texto': nome},
-    {'x': 315, 'y': -290, 'texto': nome},
-    {'x': 465, 'y': -340, 'texto': nome},
-    {'x': 15, 'y': -290, 'texto': nome},
-    {'x': 165, 'y': -340, 'texto': nome},
-    {'x': 315, 'y': -390, 'texto': nome},
-    {'x': 465, 'y': -440, 'texto': nome},
-    {'x': 15, 'y': -390, 'texto': nome},
-    {'x': 165, 'y': -440, 'texto': nome},
-    {'x': 315, 'y': -490, 'texto': nome},
-    {'x': 465, 'y': -540, 'texto': nome},
-    {'x': 15, 'y': -490, 'texto': nome},
-    {'x': 165, 'y': -540, 'texto': nome},
-    {'x': 315, 'y': -590, 'texto': nome},
-    {'x': 465, 'y': -640, 'texto': nome},
+    {'x': 15, 'y': 70, 'texto': nome},
+    {'x': 165, 'y': 20, 'texto': nome},
+    {'x': 315, 'y': -30, 'texto': nome},
+    {'x': 465, 'y': -80, 'texto': nome},
+    {'x': 15, 'y': -30, 'texto': nome},
+    {'x': 165, 'y': -80, 'texto': nome},
+    {'x': 315, 'y': -130, 'texto': nome},
+    {'x': 465, 'y': -180, 'texto': nome},
+    {'x': 15, 'y': -130, 'texto': nome},
+    {'x': 165, 'y': -180, 'texto': nome},
+    {'x': 315, 'y': -230, 'texto': nome},
+    {'x': 465, 'y': -280, 'texto': nome},
+    {'x': 15, 'y': -230, 'texto': nome},
+    {'x': 165, 'y': -280, 'texto': nome},
+    {'x': 315, 'y': -330, 'texto': nome},
+    {'x': 465, 'y': -380, 'texto': nome},
+    {'x': 15, 'y': -330, 'texto': nome},
+    {'x': 165, 'y': -380, 'texto': nome},
+    {'x': 315, 'y': -430, 'texto': nome},
+    {'x': 465, 'y': -480, 'texto': nome},
+    {'x': 15, 'y': -430, 'texto': nome},
+    {'x': 165, 'y': -480, 'texto': nome},
+    {'x': 315, 'y': -530, 'texto': nome},
+    {'x': 465, 'y': -580, 'texto': nome},
+    {'x': 15, 'y': -530, 'texto': nome},
+    {'x': 165, 'y': -580, 'texto': nome},
+    {'x': 315, 'y': -630, 'texto': nome},
+    {'x': 465, 'y': -680, 'texto': nome},
+    {'x': 15, 'y': -630, 'texto': nome},
+    {'x': 165, 'y': -680, 'texto': nome},
+    {'x': 315, 'y': -730, 'texto': nome},
+    {'x': 465, 'y': -780, 'texto': nome},
 ]
+
 espacamento_entre_marcas = 50
 
 adicionar_marcas_dagua(input_pdf, output_pdf, marcas_dagua, espacamento_entre_marcas)
